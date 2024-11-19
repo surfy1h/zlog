@@ -2,12 +2,13 @@ package report
 
 import (
 	"bufio"
-	"github.com/tidwall/pretty"
-	"go.uber.org/zap"
-	"go.uber.org/zap/zapcore"
 	"log"
 	"sync"
 	"time"
+
+	"github.com/tidwall/pretty"
+	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
 )
 
 /*
@@ -17,9 +18,7 @@ import (
 type ImType string
 
 const (
-	Tg   ImType = "tg"
-	Wx          = "wx"
-	Lark        = "lark"
+	ImTypeSlack ImType = "slack"
 )
 
 // _bufSize 给一个比较大的值，避免write的时候出现flush的情况。
@@ -28,12 +27,10 @@ const (
 )
 
 type ReportConfig struct {
-	//上报的类型，目前支持：wx lark tg
+	//上报的类型，目前支持：slack
 	Type string `json:"type" mapstructure:"type"`
-	//lark填webhook tg wx填token
+	//slack填token
 	Token string `json:"token" mapstructure:"token"`
-	//tg的chatid
-	ChatID int64 `json:",optional" mapstructure:"chatID"`
 	//日志刷新的频率 单位秒
 	FlushSec int64 `json:",default=3" mapstructure:"flushSec"`
 	//最大日志数量即达到多少条会触发刷新
@@ -45,12 +42,8 @@ type ReportConfig struct {
 func NewWriteSyncer(c ReportConfig) zapcore.WriteSyncer {
 	var ws zapcore.WriteSyncer
 	switch ImType(c.Type) {
-	case Wx:
-		ws = NewWxWriter(c.Token)
-	case Lark:
-		ws = NewLarkWriter(c.Token)
-	case Tg:
-		ws = NewTgWriter(c.Token, c.ChatID)
+	case ImTypeSlack:
+		ws = NewSlackWriter(c.Token)
 	default:
 		log.Panicf("unsupported report type:%s", c.Type)
 	}
@@ -107,4 +100,30 @@ func (l *ReportWriterBuffer) Sync() error {
 	defer l.mu.Unlock()
 	l.count = 0
 	return l.buf.Flush()
+}
+
+func NewReporter(config ReportConfig) Reporter {
+	switch config.Type {
+	case string(ImTypeSlack):
+		return NewSlackReporter(config)
+	default:
+		return NewSlackReporter(config)
+	}
+}
+
+func NewSlackWriter(token string) zapcore.WriteSyncer {
+	return &SlackWriter{token: token}
+}
+
+type SlackWriter struct {
+	token string
+}
+
+func (w *SlackWriter) Write(p []byte) (n int, err error) {
+	// Implement Slack message sending logic here
+	return len(p), nil
+}
+
+func (w *SlackWriter) Sync() error {
+	return nil
 }

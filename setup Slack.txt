@@ -1,0 +1,48 @@
+
+
+Setting up Slack App to get the token needed for this reporter:
+
+1. **Create a Slack App**:
+   - Go to https://api.slack.com/apps
+   - Click "Create New App"
+   - Choose "From scratch"
+   - Name your app and select your workspace
+
+2. **Add Bot Token Scopes**:
+   - In the left sidebar, click "OAuth & Permissions"
+   - Scroll to "Scopes" section
+   - Under "Bot Token Scopes", add these permissions:
+     - `chat:write` (to send messages)
+     - `chat:write.public` (to send messages to channels without joining)
+
+3. **Install App to Workspace**:
+   - Scroll up to "OAuth Tokens for Your Workspace"
+   - Click "Install to Workspace"
+   - Authorize the app
+
+4. **Get the Bot Token**:
+   - After installation, you'll see "Bot User OAuth Token"
+   - It starts with `xoxb-`
+   - Copy this token
+
+5. **Configure Your Code**:
+```go
+config := ReportConfig{
+    Type:     "slack",
+    Token:    "xoxb-your-token-here",
+    FlushSec: 3,
+    MaxCount: 20,
+}
+```
+
+6. **Invite Bot to Channel**:
+   - In Slack, go to the channel where you want to receive reports
+   - Type `/invite @YourBotName`
+
+**Note**: 
+- Keep your bot token secret
+- Consider using environment variables or secure configuration management
+- The token should start with `xoxb-` (Bot User OAuth Token)
+- Make sure the bot is invited to the channels where it needs to post
+
+Would you like me to show you how to implement the actual Slack message sending logic in the `SlackWriter.Write()` method?
