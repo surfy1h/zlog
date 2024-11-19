@@ -1,0 +1,24 @@
+Name: test-project # Optional. If filled, adds a {"project": "Name"} field.
+Level: info  # Log level: debug, info, warn, error
+Stacktrace: true # Default is true. Shows stack trace for error level and above.
+AddCaller: true # Default is true. Adds caller information.
+CallShip: 3 # Default is 3. Call stack depth.
+Mode: console # Default is console. Output to console or file.
+Json: false # Default is false. Whether to format as JSON.
+FileName:  # Optional. File mode parameter. Output to specified file.
+ErrorFileName:  # Optional. File mode parameter. Where to output error logs.
+MaxSize: 0 # Optional. File mode parameter. File size limit in MB.
+MaxAge: 0 # Optional. File mode parameter. Maximum retention time for files in days.
+MaxBackup: 0 # Optional. File mode parameter. Maximum number of log files.
+Async: false # Default is false. File mode parameter. Whether to write asynchronously.
+Compress: false # Default is false. File mode parameter. Whether to compress.
+Console: false # Default is false. File mode parameter. Whether to output to console simultaneously.
+Color: true # Default is false. Whether to output in color. Recommended to use during development.
+IsReport: true  # Default is false. Whether to report to IM tools. If reporting is enabled, you need to call sync at the end of the program.
+ReportConfig: # Reporting configuration. Reports to IM tools at warn level and above.
+  Type: lark # Optional. lark (Feishu is also this), wx, tg.
+  Token: https://open.feishu.cn/open-apis/bot/v2/hook/71f86ea61212-ab9a23-464512-b40b-1be001212ffe910a # For lark, fill in the group bot webhook. For tg, fill in the token. For wx, fill in the key. This example address is invalid.
+  ChatID: 0 # Fill in chatID for tg. Others do not need to be filled.
+  FlushSec: 3 # Refresh interval in seconds. Set smaller for development testing, larger for production.
+  MaxCount: 20 # Maximum cache count. Triggers sending when reaching refresh interval or maximum record count. Set smaller for development testing, larger for production.
+  Level: warn # Specify reporting level.
