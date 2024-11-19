@@ -1,8 +1,5 @@
-# zaplog: Report logs to IM tools like Feishu and WeChat Work
+# zaplog: Report logs to Slack
 
-A simple wrapper for zap. Full address: https://github.com/luxun9527/zaplog. If you find it helpful, your star is my motivation to update.
-
-During development, it can be used out of the box. Through this library, you can understand the usage of various common configurations of zap. It supports reporting logs above a specified level to IM tools like Feishu, WeChat Work, and Telegram.
 
 ```yaml
 Name: test-project # Optional. If filled, adds a {"project": "Name"} field.
