@@ -2,17 +2,18 @@ package zlog
 
 import (
 	"fmt"
+	"net/http"
+
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
-	"net/http"
 )
 
 func InitLogServer(port int32) {
 	go func() {
 		http.HandleFunc("/updateLevel", func(w http.ResponseWriter, r *http.Request) {
-			// 解析查询参数
+			// Parse query parameters
 			queryParams := r.URL.Query()
-			// 获取单个参数
+			// Get a single parameter
 			level := queryParams.Get("level")
 			l, err := zapcore.ParseLevel(level)
 			if err != nil {

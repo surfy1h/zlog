@@ -12,7 +12,7 @@ import (
 )
 
 /*
-日志上报，告知异常，具体错误还是通过日志排查
+Log reporting, informing of exceptions, or troubleshooting specific errors through logs
 */
 
 type ImType string
@@ -21,21 +21,21 @@ const (
 	ImTypeSlack ImType = "slack"
 )
 
-// _bufSize 给一个比较大的值，避免write的时候出现flush的情况。
+// _bufSize Give a relatively large value to avoid flush when write.
 const (
-	_bufSize = 1024 * 1024 //1M 内存
+	_bufSize = 1024 * 1024 //1M memory
 )
 
 type ReportConfig struct {
-	//上报的类型，目前支持：slack
+	//The type of report is currently supported：slack
 	Type string `json:"type" mapstructure:"type"`
 	//slack填token
 	Token string `json:"token" mapstructure:"token"`
-	//日志刷新的频率 单位秒
+	//The frequency at which the log is refreshed in seconds
 	FlushSec int64 `json:",default=3" mapstructure:"flushSec"`
-	//最大日志数量即达到多少条会触发刷新
+	//The maximum number of logs is how many logs are triggered
 	MaxCount int64 `json:",default=20" mapstructure:"maxCount"`
-	//什么级别的日志上报
+	//What level of log reporting
 	Level zap.AtomicLevel `json:"Level" mapstructure:"level"`
 }
 
@@ -78,7 +78,7 @@ func (l *ReportWriterBuffer) Start() {
 	}
 }
 
-// 这个p会被zap复用，一定要注意,如果不拷贝该切片可能会出现问题。
+// This p will be reused by zap, and it is important to note that there may be problems if the slice is not copied。
 func (l *ReportWriterBuffer) Write(p []byte) (n int, err error) {
 	l.mu.Lock()
 	defer l.mu.Unlock()
